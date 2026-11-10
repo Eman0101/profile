@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emman Quistadio | Backend Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --paper: #ECEDEF;
+      --panel: #F6F7F8;
+      --ink: #15171C;
+      --mute: #6B6F7A;
+      --line: #D3D5DA;
+      --accent: #2B3BFF;
+      --ok: #12805C;
+      --display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+      --body: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      --code: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+    }
+
+    :root[data-theme="dark"] {
+      --paper: #14161B;
+      --panel: #1B1E25;
+      --ink: #E9EAEE;
+      --mute: #8C909B;
+      --line: #2A2D35;
+      --accent: #7C88FF;
+      --ok: #4FD1A1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.6;
+      transition: background .4s, color .4s;
+      -webkit-font-smoothing: antialiased
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 2px
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 28px
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line)
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px
+    }
+
+    .logo {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -.02em
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      align-items: center
+    }
+
+    .nav-links a {
+      font-size: 15px;
+      color: var(--mute);
+      transition: color .2s
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--ink)
+    }
+
+    #theme {
+      background: none;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px
+    }
+
+    #theme:hover {
+      border-color: var(--ink)
+    }
+
+    /* hero */
+    #hero {
+      padding: 0;
+      border-top: 0
+    }
+
+    #hero .wrap {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 56px;
+      align-items: center;
+      padding-top: 48px;
+      padding-bottom: 64px
+    }
+
+    .hi {
+      color: var(--mute);
+      margin-bottom: 12px
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(48px, 8vw, 104px);
+      line-height: .94;
+      letter-spacing: -.045em
+    }
+
+    .role {
+      margin-top: 26px;
+      font-size: 20px;
+      max-width: 32ch
+    }
+
+    .role b {
+      font-weight: 600
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--ink);
+      font-weight: 500;
+      font-size: 15px;
+      cursor: pointer;
+      background: none;
+      color: var(--ink);
+      font-family: inherit;
+      transition: background .25s, color .25s
+    }
+
+    .btn:hover {
+      background: var(--ink);
+      color: var(--paper)
+    }
+
+    .btn.dark {
+      background: var(--ink);
+      color: var(--paper)
+    }
+
+    .btn.dark:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff
+    }
+
+    .socials {
+      display: flex;
+      gap: 18px;
+      margin-top: 26px;
+      font-size: 20px;
+      color: var(--mute)
+    }
+
+    .socials a:hover {
+      color: var(--ink)
+    }
+
+    /* the one memorable piece: a live API response */
+    .api {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: var(--code);
+      font-size: 14px
+    }
+
+    .api-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .api-bar .verb {
+      color: var(--accent);
+      font-weight: 500
+    }
+
+    .api-bar .path {
+      flex: 1;
+      color: var(--ink)
+    }
+
+    .api-bar button {
+      font-family: var(--body);
+      font-size: 13px;
+      border: 1px solid var(--line);
+      background: none;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 4px 14px;
+      cursor: pointer;
+      transition: border-color .2s
+    }
+
+    .api-bar button:hover {
+      border-color: var(--ink)
+    }
+
+    .api-status {
+      display: flex;
+      gap: 14px;
+      padding: 10px 16px;
+      color: var(--mute);
+      font-size: 12.5px;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .api-status .ok {
+      color: var(--ok);
+      font-weight: 500
+    }
+
+    .api pre {
+      padding: 18px 16px;
+      min-height: 290px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      color: var(--ink)
+    }
+
+    .api .k {
+      color: var(--mute)
+    }
+
+    .api .s {
+      color: var(--accent)
+    }
+
+    .api .b {
+      color: var(--ok)
+    }
+
+    .caret::after {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 14px;
+      background: var(--ink);
+      margin-left: 2px;
+      vertical-align: -2px;
+      animation: blink 1s steps(2) infinite
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0
+      }
+    }
+
+    section {
+      padding: 112px 0;
+      border-top: 1px solid var(--line)
+    }
+
+    .sec {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--mute)
+    }
+
+    .lead {
+      font-family: var(--display);
+      font-size: clamp(26px, 3.6vw, 40px);
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      font-weight: 600;
+      max-width: 24ch
+    }
+
+    .about-text {
+      margin-top: 26px;
+      color: var(--mute);
+      max-width: 56ch
+    }
+
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 26px
+    }
+
+    .stack span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 14px
+    }
+
+    .xp {
+      list-style: none
+    }
+
+    .xp li {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .xp li:first-child {
+      padding-top: 0
+    }
+
+    .xp time {
+      color: var(--mute);
+      font-size: 15px
+    }
+
+    .xp h3 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 21px;
+      letter-spacing: -.01em
+    }
+
+    .xp p {
+      color: var(--mute);
+      margin-top: 4px;
+      max-width: 52ch
+    }
+
+    /* case studies */
+    .projects {
+      list-style: none;
+      border-top: 1px solid var(--line)
+    }
+
+    .proj {
+      border-bottom: 1px solid var(--line)
+    }
+
+    .proj>button {
+      all: unset;
+      box-sizing: border-box;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 20px;
+      padding: 26px 0;
+      cursor: pointer
+    }
+
+    .proj .name {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(26px, 4vw, 44px);
+      letter-spacing: -.03em;
+      transition: transform .35s cubic-bezier(.2, .8, .2, 1), color .25s
+    }
+
+    .proj .kind {
+      color: var(--mute);
+      font-size: 15px;
+      text-align: right
+    }
+
+    .projects:hover .proj:not(:hover):not(.open) .name {
+      color: var(--mute)
+    }
+
+    .proj:hover .name,
+    .proj>button:focus-visible .name {
+      transform: translateX(14px)
+    }
+
+    .detail {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .45s ease
+    }
+
+    .proj.open .detail {
+      grid-template-rows: 1fr
+    }
+
+    .detail>div {
+      overflow: hidden
+    }
+
+    .case {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 40px;
+      padding: 8px 0 36px
+    }
+
+    .case dt {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 2px
+    }
+
+    .case dd {
+      color: var(--mute);
+      max-width: 46ch
+    }
+
+    .case .wide {
+      grid-column: 1/-1
+    }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 6px
+    }
+
+    .flow .node {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-family: var(--code)
+    }
+
+    .flow .link {
+      width: 28px;
+      height: 1px;
+      background: var(--mute)
+    }
+
+    .result {
+      font-family: var(--display);
+      font-size: clamp(20px, 2.6vw, 28px);
+      font-weight: 600;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      max-width: 30ch
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .tags span {
+      font-size: 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 12px;
+      color: var(--ink)
+    }
+
+    .links {
+      display: flex;
+      gap: 18px;
+      font-size: 15px
+    }
+
+    .links a {
+      border-bottom: 1px solid var(--line);
+      transition: border-color .2s
+    }
+
+    .links a:hover {
+      border-color: var(--ink)
+    }
+
+    #preview {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 300px;
+      aspect-ratio: 4/3;
+      border-radius: 6px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 30;
+      opacity: 0;
+      transform: translate(-999px, -999px);
+      transition: opacity .25s;
+      background: var(--line)
+    }
+
+    #preview.on {
+      opacity: 1
+    }
+
+    #preview .art,
+    #preview img,
+    #preview video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    @media (hover:none) {
+      #preview {
+        display: none
+      }
+    }
+
+    #contact .lead {
+      max-width: 18ch
+    }
+
+    .mail {
+      margin-top: 34px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    #copied {
+      color: var(--accent);
+      font-size: 15px;
+      min-height: 1.6em;
+      margin-top: 14px
+    }
+
+    .meta {
+      margin-top: 50px;
+      color: var(--mute);
+      font-size: 15px
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+      color: var(--mute);
+      font-size: 14px
+    }
+
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap
+    }
+
+    @media (max-width:860px) {
+      #hero .wrap {
+        grid-template-columns: 1fr;
+        gap: 40px
+      }
+
+      .sec {
+        grid-template-columns: 1fr;
+        gap: 20px
+      }
+
+      .xp li {
+        grid-template-columns: 1fr;
+        gap: 4px
+      }
+
+      .case {
+        grid-template-columns: 1fr
+      }
+
+      .nav-links {
+        gap: 16px
+      }
+
+      .nav-links li:nth-child(2) {
+        display: none
+      }
+
+      .proj .kind {
+        display: none
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        transition: none !important;
+        animation: none !important;
+        scroll-behavior: auto !important
+      }
+    }
+
+    /* animated project previews */
+    #preview {
+      width: 260px
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      background: #15171C;
+      color: #E9EAEE;
+      font: 500 11px/1.4 var(--body);
+      padding: 14px;
+      overflow: hidden
+    }
+
+    .scene .lab {
+      color: #8C909B;
+      font-size: 11px
+    }
+
+    .scene .chip {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      background: var(--a);
+      color: #14161B;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      animation: chip 5s infinite
+    }
+
+    @keyframes chip {
+
+      0%,
+      55% {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      65%,
+      90% {
+        opacity: 1;
+        transform: none
+      }
+
+      100% {
+        opacity: 0
+      }
+    }
+
+    .sbar {
+      border: 1px solid #2A2D35;
+      border-radius: 6px;
+      padding: 7px 10px;
+      color: #8C909B
+    }
+
+    .rows {
+      position: relative;
+      margin-top: 12px;
+      display: grid;
+      gap: 6px
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      height: 24px;
+      padding: 0 6px
+    }
+
+    .row b {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      background: #2A2D35
+    }
+
+    .row u {
+      height: 6px;
+      border-radius: 3px;
+      background: #2A2D35;
+      width: 70%
+    }
+
+    .row:nth-child(3) u {
+      width: 48%
+    }
+
+    .row:nth-child(4) u {
+      width: 62%
+    }
+
+    .hl {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 24px;
+      border-radius: 5px;
+      background: color-mix(in srgb, var(--a) 26%, transparent);
+      border: 1px solid var(--a);
+      animation: scan 5s ease-in-out infinite
+    }
+
+    @keyframes scan {
+
+      0%,
+      10% {
+        transform: translateY(0)
+      }
+
+      25%,
+      35% {
+        transform: translateY(30px)
+      }
+
+      50%,
+      100% {
+        transform: translateY(60px)
+      }
+    }
+
+    .win {
+      height: 56px;
+      overflow: hidden;
+      margin: 8px 0 4px
+    }
+
+    .reel {
+      display: flex;
+      flex-direction: column;
+      animation: reel 6s ease-in-out infinite
+    }
+
+    .reel span {
+      height: 56px;
+      font: 800 42px/56px var(--display);
+      letter-spacing: -.03em;
+      color: var(--a)
+    }
+
+    @keyframes reel {
+
+      0%,
+      25% {
+        transform: translateY(0)
+      }
+
+      33%,
+      58% {
+        transform: translateY(-56px)
+      }
+
+      66%,
+      91% {
+        transform: translateY(-112px)
+      }
+
+      100% {
+        transform: translateY(-168px)
+      }
+    }
+
+    .dots {
+      margin-top: 12px
+    }
+
+    .dots i {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      border: 1px solid #2A2D35;
+      margin-right: 6px;
+      animation: wait 3s infinite;
+      animation-delay: var(--d)
+    }
+
+    @keyframes wait {
+
+      0%,
+      100% {
+        background: transparent
+      }
+
+      50% {
+        background: #2A2D35
+      }
+    }
+
+    .track {
+      position: relative;
+      margin-top: 44px
+    }
+
+    .line {
+      position: absolute;
+      left: 12.5%;
+      right: 12.5%;
+      top: 6px;
+      height: 3px;
+      background: #2A2D35;
+      border-radius: 2px
+    }
+
+    .fill {
+      height: 100%;
+      background: var(--a);
+      border-radius: 2px;
+      transform-origin: left;
+      animation: fillbar 5s ease-in-out infinite
+    }
+
+    @keyframes fillbar {
+
+      0%,
+      5% {
+        transform: scaleX(0)
+      }
+
+      75%,
+      92% {
+        transform: scaleX(1)
+      }
+
+      100% {
+        transform: scaleX(0)
+      }
+    }
+
+    .stages {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+      position: relative
+    }
+
+    .stages span {
+      font-size: 9.5px;
+      color: #8C909B
+    }
+
+    .stages span::before {
+      content: "";
+      display: block;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #2A2D35;
+      margin: 0 auto 8px
+    }
+
+    .stages span:nth-child(1)::before {
+      animation: l1 5s infinite
+    }
+
+    .stages span:nth-child(2)::before {
+      animation: l2 5s infinite
+    }
+
+    .stages span:nth-child(3)::before {
+      animation: l3 5s infinite
+    }
+
+    .stages span:nth-child(4)::before {
+      animation: l4 5s infinite
+    }
+
+    @keyframes l1 {
+
+      0%,
+      2% {
+        background: #2A2D35
+      }
+
+      6%,
+      92% {
+        background: var(--a)
+      }
+
+      100% {
+        background: #2A2D35
+      }
+    }
+
+    @keyframes l2 {
+
+      0%,
+      26% {
+        background: #2A2D35
+      }
+
+      30%,
+      92% {
+        background: var(--a)
+      }
+
+      100% {
+        background: #2A2D35
+      }
+    }
+
+    @keyframes l3 {
+
+      0%,
+      50% {
+        background: #2A2D35
+      }
+
+      54%,
+      92% {
+        background: var(--a)
+      }
+
+      100% {
+        background: #2A2D35
+      }
+    }
+
+    @keyframes l4 {
+
+      0%,
+      72% {
+        background: #2A2D35
+      }
+
+      76%,
+      92% {
+        background: var(--a)
+      }
+
+      100% {
+        background: #2A2D35
+      }
+    }
+
+    .d {
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      height: 26px
+    }
+
+    .d span {
+      color: #8C909B
+    }
+
+    .d em {
+      font-style: normal;
+      font-size: 10.5px;
+      color: #8C909B
+    }
+
+    .d i {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--a);
+      transform-origin: left;
+      animation: grow 5s ease-in-out infinite;
+      animation-delay: var(--d)
+    }
+
+    @keyframes grow {
+      0% {
+        transform: scaleX(0)
+      }
+
+      18%,
+      85% {
+        transform: scaleX(1)
+      }
+
+      100% {
+        transform: scaleX(0)
+      }
+    }
+
+    @media (hover:hover) and (min-width:861px) {
+      .proj .name {
+        max-width: 58%
+      }
+
+      .proj .kind {
+        transition: opacity .2s
+      }
+
+      .proj:hover .kind {
+        opacity: 0
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="wrap">
+      <a class="logo" href="#hero" aria-label="Emman Q, home">Emman Q</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="theme" aria-label="Switch to dark theme"><i class="fas fa-moon"></i></button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="hero">
+      <div class="wrap">
+        <div>
+          <p class="hi">Hello, I’m</p>
+          <h1>Emman Quistadio</h1>
+          <p class="role"><b>Backend developer</b> building the databases, APIs and services that quietly keep things
+            running.</p>
+          <div class="buttons">
+            <a href="Quistadio_Emman.pdf" class="btn dark" download>Download CV</a>
+            <a href="#projects" class="btn">See my work</a>
+          </div>
+          <div class="socials">
+            <a href="https://www.instagram.com/emaaaaani/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/emman.quistadio" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+
+        <div class="api" aria-label="Sample API response describing Emman">
+          <div class="api-bar">
+            <span class="verb">GET</span><span class="path">/api/emman</span>
+            <button id="send" type="button">Send again</button>
+          </div>
+          <div class="api-status" id="status"><span>Status: waiting</span></div>
+          <pre id="out" aria-live="off"></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap sec">
+        <h2>About</h2>
+        <div>
+          <p class="lead">I design backends that are simple to reason about and hard to break.</p>
+          <p class="about-text">I’m a computer programmer at DENR-EMB Region VI in Iloilo City, where I design and build
+            the internal systems the office relies on: records, queueing, recruitment and HR. I like turning manual,
+            paper-heavy work into systems people find easy to use, and I handle the support that keeps them running.</p>
+          <div class="stack"><span>PHP</span><span>CodeIgniter
+              4</span><span>Laravel</span><span>MySQL</span><span>JavaScript</span><span>Python</span><span>Bootstrap</span><span>Git
+              and GitHub</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="wrap sec">
+        <h2>Experience</h2>
+        <ul class="xp">
+          <li><time>2024 – Present</time>
+            <div>
+              <h3>Computer Programmer, DENR-EMB Region VI</h3>
+              <p>Design, build and maintain the office’s internal web systems: records management, queueing, recruitment
+                and HR. Also provide technical support and enhancements across departments.</p>
+            </div>
+          </li>
+          <li><time>2023</time>
+            <div>
+              <h3>Clerical and Tech Support, DENR-EMB Region VI</h3>
+              <p>Built a PHP and SQL record-tracking system, helped manage the website database, and handled PC setup
+                and network troubleshooting.</p>
+            </div>
+          </li>
+          <li><time>2023</time>
+            <div>
+              <h3>BS Information Technology, ISAT University</h3>
+              <p>Also holds NC II in Computer System Servicing and is a Civil Service Exam (Professional Level) passer.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="wrap sec">
+        <h2>Projects</h2>
+        <ul class="projects">
+          <li class="proj" data-scene="rmis" data-c1="#2B3BFF" data-c2="#9AA3FF" data-media="">
+            <button aria-expanded="false"><span class="name">Records Management Information System</span><span
+                class="kind">RMIS · Records</span></button>
+            <div class="detail">
+              <div>
+                <dl class="case">
+                  <div>
+                    <dt>Problem</dt>
+                    <dd>The existing records system needed better performance, structure and maintainability.</dd>
+                  </div>
+                  <div>
+                    <dt>What it does</dt>
+                    <dd>A centralized system to organize, store, track and manage official records and documents, now
+                      rebuilt on CodeIgniter 4 with refined core features and interface.</dd>
+                  </div>
+                  <div class="wide">
+                    <dt>How it fits together</dt>
+                    <dd>
+                      <div class="flow"><span class="node">Upload</span><span class="link"></span><span
+                          class="node">Records database</span><span class="link"></span><span class="node">Search and
+                          retrieval</span></div>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd class="result">Presented to other regional offices as a candidate for a nationwide records
+                      system.</dd>
+                  </div>
+                  <div>
+                    <dt>Stack</dt>
+                    <dd>
+                      <div class="tags"><span>PHP</span><span>CodeIgniter 4</span><span>Records</span></div>
+                    </dd>
+                  </div>
+                  <div class="wide">
+                    <dt>My role</dt>
+                    <dd>Upgraded the existing system by migrating it to CodeIgniter 4, optimizing the backend logic and
+                      refining the interface.</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </li>
+          <li class="proj" data-scene="queue" data-c1="#15171C" data-c2="#6B6F7A" data-media="">
+            <button aria-expanded="false"><span class="name">Queueing System</span><span class="kind">Service ·
+                Queueing</span></button>
+            <div class="detail">
+              <div>
+                <dl class="case">
+                  <div>
+                    <dt>Problem</dt>
+                    <dd>Daily client transactions needed a clearer flow, and waiting was disorderly.</dd>
+                  </div>
+                  <div>
+                    <dt>What it does</dt>
+                    <dd>Issues queue numbers, organizes client flow, generates daily and monthly reports, and collects
+                      customer satisfaction feedback.</dd>
+                  </div>
+                  <div class="wide">
+                    <dt>How it fits together</dt>
+                    <dd>
+                      <div class="flow"><span class="node">Client</span><span class="link"></span><span
+                          class="node">Queue number</span><span class="link"></span><span class="node">Service
+                          window</span><span class="link"></span><span class="node">Feedback</span></div>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd class="result">A more orderly and convenient experience for both clients and employees.</dd>
+                  </div>
+                  <div>
+                    <dt>Stack</dt>
+                    <dd>
+                      <div class="tags"><span>Queue management</span><span>Reports</span><span>Feedback</span></div>
+                    </dd>
+                  </div>
+                  <div class="wide">
+                    <dt>My role</dt>
+                    <dd>Proposed the system and developed it for the office.</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </li>
+          <li class="proj" data-scene="recruit" data-c1="#FF6B3D" data-c2="#FFD2C2" data-media="">
+            <button aria-expanded="false"><span class="name">Recruitment System</span><span class="kind">Hiring ·
+                Applicants</span></button>
+            <div class="detail">
+              <div>
+                <dl class="case">
+                  <div>
+                    <dt>Problem</dt>
+                    <dd>Job postings, applicants and exam or interview schedules were managed manually.</dd>
+                  </div>
+                  <div>
+                    <dt>What it does</dt>
+                    <dd>HR staff post vacancies, review applications and schedule exams or interviews. Admins manage HR
+                      accounts and approve postings. Applicants get automated email notifications.</dd>
+                  </div>
+                  <div class="wide">
+                    <dt>How it fits together</dt>
+                    <dd>
+                      <div class="flow"><span class="node">Job posting</span><span class="link"></span><span
+                          class="node">Application</span><span class="link"></span><span class="node">Exam or
+                          interview</span><span class="link"></span><span class="node">Reports</span></div>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd class="result">More transparency in hiring and less manual work.</dd>
+                  </div>
+                  <div>
+                    <dt>Stack</dt>
+                    <dd>
+                      <div class="tags"><span>Applicant tracking</span><span>Email notifications</span><span>Transaction
+                          tracker</span></div>
+                    </dd>
+                  </div>
+                  <div class="wide">
+                    <dt>My role</dt>
+                    <dd>Developed the web-based system, including job postings, applicant tracking and the hiring-stage
+                      tracker.</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </li>
+          <li class="proj" data-scene="hris" data-c1="#1FA37A" data-c2="#BDEBDA" data-media="">
+            <button aria-expanded="false"><span class="name">Human Resource Information System</span><span
+                class="kind">HRIS · HR</span></button>
+            <div class="detail">
+              <div>
+                <dl class="case">
+                  <div>
+                    <dt>Problem</dt>
+                    <dd>Employee records, leave, attendance and other HR processes were slow to process and easy to get
+                      wrong.</dd>
+                  </div>
+                  <div>
+                    <dt>What it does</dt>
+                    <dd>A centralized system that digitizes employee records and profiles, leave applications, daily
+                      time records and attendance monitoring.</dd>
+                  </div>
+                  <div class="wide">
+                    <dt>How it fits together</dt>
+                    <dd>
+                      <div class="flow"><span class="node">Employee</span><span class="link"></span><span
+                          class="node">Leave and DTR</span><span class="link"></span><span class="node">HR
+                          database</span></div>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Outcome</dt>
+                    <dd class="result">More accurate records, easier access and less administrative work.</dd>
+                  </div>
+                  <div>
+                    <dt>Stack</dt>
+                    <dd>
+                      <div class="tags"><span>PHP</span><span>SQL Server</span><span>Attendance</span></div>
+                    </dd>
+                  </div>
+                  <div class="wide">
+                    <dt>My role</dt>
+                    <dd></dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap sec">
+        <h2>Contact</h2>
+        <div>
+          <p class="lead">Have a system that needs building? Let’s talk.</p>
+          <div class="mail">
+            <button class="btn dark" id="copy" data-email="Quistadioemman@gmail.com">Copy email</button>
+            <a class="btn" href="mailto:Quistadioemman@gmail.com">Open mail app</a>
+          </div>
+          <p id="copied" role="status" aria-live="polite"></p>
+          <p class="meta">Based in Iloilo City, Philippines · local time <span id="clock">--:--</span></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>&copy; 2026 Emman Quistadio</span><span>Built by hand.</span></div>
+  </footer>
+  <template id="scene-rmis">
+    <div class="scene" style="--a:#7C88FF">
+      <div class="sbar">Search records</div>
+      <div class="rows">
+        <div class="hl"></div>
+        <div class="row"><b></b><u></u></div>
+        <div class="row"><b></b><u></u></div>
+        <div class="row"><b></b><u></u></div>
+        <div class="row"><b></b><u></u></div>
+      </div>
+      <div class="chip">Found</div>
+    </div>
+  </template>
+  <template id="scene-queue">
+    <div class="scene" style="--a:#FF9B6B">
+      <p class="lab">Now serving</p>
+      <div class="win">
+        <div class="reel"><span>A-014</span><span>A-015</span><span>A-016</span><span>A-014</span></div>
+      </div>
+      <p class="lab">Window 2</p>
+      <div class="dots"><i style="--d:0s"></i><i style="--d:.4s"></i><i style="--d:.8s"></i><i style="--d:1.2s"></i>
+      </div>
+    </div>
+  </template>
+  <template id="scene-recruit">
+    <div class="scene" style="--a:#FF6B3D">
+      <p class="lab">Applicant tracker</p>
+      <div class="track">
+        <div class="line">
+          <div class="fill"></div>
+        </div>
+        <div class="stages"><span>Applied</span><span>Screening</span><span>Exam</span><span>Interview</span></div>
+      </div>
+      <div class="chip">Email sent</div>
+    </div>
+  </template>
+  <template id="scene-hris">
+    <div class="scene" style="--a:#4FD1A1">
+      <p class="lab" style="margin-bottom:6px">Daily time record</p>
+      <div class="d"><span>Mon</span><i style="--d:0s"></i><em>8:00 – 5:00</em></div>
+      <div class="d"><span>Tue</span><i style="--d:.4s"></i><em>8:02 – 5:01</em></div>
+      <div class="d"><span>Wed</span><i style="--d:.8s"></i><em>7:58 – 5:00</em></div>
+      <div class="d"><span>Thu</span><i style="--d:1.2s"></i><em>8:00 – 5:03</em></div>
+      <div class="chip">Leave approved</div>
+    </div>
+  </template>
+  <div id="preview" aria-hidden="true"></div>
+
+  <script>
+    (function () {
+      var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var root = document.documentElement;
+
+      /* theme */
+      var tbtn = document.getElementById('theme');
+      function setTheme(t) {
+        root.dataset.theme = t;
+        tbtn.innerHTML = t === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        tbtn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      }
+      try { var saved = localStorage.getItem('theme'); if (saved) setTheme(saved); else if (matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark'); } catch (e) { }
+      tbtn.addEventListener('click', function () {
+        var t = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        setTheme(t);
+        try { localStorage.setItem('theme', t); } catch (e) { }
+      });
+
+      /* API response in the hero (edit this object to change what it says) */
+      var profile = {
+        name: 'Emman Quistadio',
+        role: 'Computer Programmer',
+        works_at: 'DENR-EMB Region VI',
+        location: 'Iloilo City, Philippines',
+        stack: ['PHP', 'CodeIgniter', 'MySQL'],
+        focus: 'Internal systems and databases',
+        open_to_work: true
+      };
+      var out = document.getElementById('out'), status = document.getElementById('status'), send = document.getElementById('send');
+      var timer = null;
+
+      function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+      function paint(v) {
+        if (typeof v === 'boolean') return '<span class="b">' + v + '</span>';
+        return '<span class="s">"' + esc(v) + '"</span>';
+      }
+      function buildHTML() {
+        var keys = Object.keys(profile), lines = ['{'];
+        keys.forEach(function (k, i) {
+          var v = profile[k], comma = i < keys.length - 1 ? ',' : '';
+          var val = Array.isArray(v) ? '[' + v.map(paint).join(', ') + ']' : paint(v);
+          lines.push('  <span class="k">"' + k + '"</span>: ' + val + comma);
+        });
+        lines.push('}');
+        return lines;
+      }
+      function run() {
+        clearTimeout(timer);
+        var lines = buildHTML(), ms = Math.floor(80 + Math.random() * 90);
+        status.innerHTML = '<span>Status: sending…</span>';
+        out.innerHTML = '';
+        if (reduce) {
+          out.innerHTML = lines.join('\n');
+          status.innerHTML = '<span class="ok">200 OK</span><span>' + ms + ' ms</span>';
+          return;
+        }
+        var i = 0;
+        timer = setTimeout(function () {
+          status.innerHTML = '<span class="ok">200 OK</span><span>' + ms + ' ms</span>';
+          (function next() {
+            out.innerHTML = lines.slice(0, ++i).join('\n') + '<span class="caret"></span>';
+            if (i < lines.length) timer = setTimeout(next, 120);
+            else out.innerHTML = lines.join('\n');
+          })();
+        }, 450);
+      }
+      send.addEventListener('click', run);
+      run();
+
+      /* active nav link */
+      var links = document.querySelectorAll('.nav-links a');
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id); });
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      document.querySelectorAll('section[id]').forEach(function (s) { io.observe(s); });
+
+      /* projects: floating preview + expandable case study */
+      var pv = document.getElementById('preview');
+      var tx = 0, ty = 0, cx = 0, cy = 0, ax = 0, running = false;
+      function buildPreview(li) {
+        pv.innerHTML = '';
+        var m = li.dataset.media;
+        if (m) {
+          var el;
+          if (/\.(mp4|webm)$/i.test(m)) { el = document.createElement('video'); el.src = m; el.muted = true; el.loop = true; el.autoplay = true; el.playsInline = true; }
+          else { el = document.createElement('img'); el.src = m; el.alt = ''; }
+          pv.appendChild(el);
+        } else if (document.getElementById('scene-' + li.dataset.scene)) {
+          pv.appendChild(document.getElementById('scene-' + li.dataset.scene).content.cloneNode(true));
+        } else {
+          var a = document.createElement('div'); a.className = 'art';
+          a.style.background = 'radial-gradient(circle at 30% 30%,' + li.dataset.c2 + ',transparent 60%),' + li.dataset.c1;
+          pv.appendChild(a);
+        }
+      }
+      function loop() {
+        cx += (tx - cx) * .14; cy += (ty - cy) * .14;
+        var y = Math.min(Math.max(cy - 98, 72), innerHeight - 205);
+        pv.style.transform = 'translate(' + ax + 'px,' + y + 'px)';
+        if (pv.classList.contains('on') || Math.abs(tx - cx) > .5) requestAnimationFrame(loop); else running = false;
+      }
+      document.querySelectorAll('.proj').forEach(function (li) {
+        var b = li.querySelector('button');
+        var head = b;
+        head.addEventListener('pointerenter', function (e) {
+          if (e.pointerType === 'touch' || li.classList.contains('open')) return;
+          buildPreview(li); ax = Math.min(document.querySelector('.projects').getBoundingClientRect().right - 260, innerWidth - 276); tx = cx = e.clientX; ty = cy = e.clientY;
+          pv.classList.add('on'); if (!running) { running = true; requestAnimationFrame(loop); }
+        });
+        head.addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; });
+        head.addEventListener('pointerleave', function () { pv.classList.remove('on'); });
+        b.addEventListener('click', function () {
+          var open = li.classList.toggle('open');
+          b.setAttribute('aria-expanded', open);
+          if (open) pv.classList.remove('on');
+        });
+      });
+
+      /* copy email */
+      var copy = document.getElementById('copy'), note = document.getElementById('copied');
+      copy.addEventListener('click', function () {
+        var mail = copy.dataset.email;
+        function done() { note.textContent = 'Email copied.'; setTimeout(function () { note.textContent = ''; }, 2200); }
+        if (navigator.clipboard) { navigator.clipboard.writeText(mail).then(done, function () { note.textContent = mail; }); }
+        else { note.textContent = mail; }
+      });
+
+      /* local clock */
+      var clock = document.getElementById('clock');
+      function tick() { clock.textContent = new Date().toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Manila' }); }
+      tick(); setInterval(tick, 30000);
+    })();
+  </script>
+</body>
+
+</html>
